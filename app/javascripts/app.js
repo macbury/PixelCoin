@@ -38,9 +38,17 @@ window.App = {
 
       accounts = accs;
       account = accounts[0];
+      window.account = account
 
       self.refreshBalance();
     });
+
+    MetaCoin.deployed().then((contract) => {
+      contract.Transfer().watch(() => {
+        console.log("Transfer event!!!!");
+        self.refreshBalance();
+      })
+    })
   },
 
   setStatus: function(message) {
@@ -48,12 +56,28 @@ window.App = {
     status.innerHTML = message;
   },
 
+  refreshSupply() {
+    MetaCoin.deployed().then(function(instance) {
+      var supply_element = document.getElementById("supply");
+      instance.totalSupply().then((supply) => {
+        supply_element.innerHTML = supply;
+      })
+
+    });
+  },
+
   refreshBalance: function() {
     var self = this;
 
+    this.refreshSupply()
     var meta;
     MetaCoin.deployed().then(function(instance) {
+      // instance.getPixels().then((resp) => {
+      //   console.log(resp.map((i) => { return i.toNumber() }))
+      // })
+      //instance.getPixels().then((pixels) => console.log(pixels))
       meta = instance;
+      window.meta = meta
       return meta.balanceOf.call(account, {from: account});
     }).then(function(value) {
       var balance_element = document.getElementById("balance");
@@ -61,6 +85,26 @@ window.App = {
     }).catch(function(e) {
       console.log(e);
       self.setStatus("Error getting balance; see log.");
+    });
+  },
+
+  buyTokens: function() {
+    var self = this;
+    var amount = parseInt(document.getElementById("amountEth").value);
+    var weiAmount = web3.toWei(amount, 'ether')
+    console.log("Sending: " + weiAmount)
+    this.setStatus("Initiating transaction... (please wait)");
+
+    var meta;
+    MetaCoin.deployed().then(function(instance) {
+      meta = instance;
+      return meta.buyToken({from: account, value: weiAmount});
+    }).then(function() {
+      self.setStatus("Transaction complete!");
+      self.refreshBalance();
+    }).catch(function(e) {
+      console.log(e);
+      self.setStatus("Error sending coin; see log.");
     });
   },
 
@@ -77,7 +121,7 @@ window.App = {
       meta = instance;
       return meta.transfer(receiver, amount, {from: account});
     }).then(function() {
-      self.setStatus("Transaction complete!");
+      self.setStatus("Transaction complete! Waiting for confirmation....");
       self.refreshBalance();
     }).catch(function(e) {
       console.log(e);
