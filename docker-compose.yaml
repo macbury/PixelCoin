@@ -1,0 +1,6 @@
+version: '3'
+services:
+  ethereum:
+    image: trufflesuite/ganache-cli:latest
+    ports:
+      - 7545:8545

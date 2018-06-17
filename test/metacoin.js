@@ -1,64 +1,37 @@
 var MetaCoin = artifacts.require("./MetaCoin.sol");
+contract('MetaCoin', (accounts) => {
+  let instance = null
+  beforeEach(async () => {
+    instance = await MetaCoin.deployed();
+  })
 
-contract('MetaCoin', function(accounts) {
-  it("should put 10000 MetaCoin in the first account", function() {
-    return MetaCoin.deployed().then(function(instance) {
-      return instance.getBalance.call(accounts[0]);
-    }).then(function(balance) {
-      assert.equal(balance.valueOf(), 10000, "10000 wasn't in the first account");
-    });
-  });
-  it("should call a function that depends on a linked library", function() {
-    var meta;
-    var metaCoinBalance;
-    var metaCoinEthBalance;
+  it("should put 10000000 PXC in the first account", async () => {
+    let balance = await instance.balanceOf.call(accounts[0])
+    assert.equal(balance.valueOf(), 10000000, "10000000 wasn't in the first account")
+  })
 
-    return MetaCoin.deployed().then(function(instance) {
-      meta = instance;
-      return meta.getBalance.call(accounts[0]);
-    }).then(function(outCoinBalance) {
-      metaCoinBalance = outCoinBalance.toNumber();
-      return meta.getBalanceInEth.call(accounts[0]);
-    }).then(function(outCoinBalanceEth) {
-      metaCoinEthBalance = outCoinBalanceEth.toNumber();
-    }).then(function() {
-      assert.equal(metaCoinEthBalance, 2 * metaCoinBalance, "Library function returned unexpeced function, linkage may be broken");
-    });
-  });
+  it("should have 0 PXC in the other account", async () => {
+    let balance = await instance.balanceOf.call(accounts[1])
+    assert.equal(balance.valueOf(), 0, "0 wasn't in the second account")
+  })
 
-  it("should send coin correctly", function() {
-    var meta;
+  it("should allow buy tokens", async () => {
+    let account = accounts[4]
+    await instance.buyToken({ from: account, value: web3.toWei(1, 'ether') });
+    let balance = await instance.balanceOf.call(account)
+    assert.equal(balance.valueOf(), 5, "5 is in second account")
+    assert.ok(web3.eth.getBalance(account).lessThan(web3.toWei(100, 'ether')));
+  })
 
-    //    Get initial balances of first and second account.
-    var account_one = accounts[0];
-    var account_two = accounts[1];
-
-    var account_one_starting_balance;
-    var account_two_starting_balance;
-    var account_one_ending_balance;
-    var account_two_ending_balance;
-
-    var amount = 10;
-
-    return MetaCoin.deployed().then(function(instance) {
-      meta = instance;
-      return meta.getBalance.call(account_one);
-    }).then(function(balance) {
-      account_one_starting_balance = balance.toNumber();
-      return meta.getBalance.call(account_two);
-    }).then(function(balance) {
-      account_two_starting_balance = balance.toNumber();
-      return meta.sendCoin(account_two, amount, {from: account_one});
-    }).then(function() {
-      return meta.getBalance.call(account_one);
-    }).then(function(balance) {
-      account_one_ending_balance = balance.toNumber();
-      return meta.getBalance.call(account_two);
-    }).then(function(balance) {
-      account_two_ending_balance = balance.toNumber();
-
-      assert.equal(account_one_ending_balance, account_one_starting_balance - amount, "Amount wasn't correctly taken from the sender");
-      assert.equal(account_two_ending_balance, account_two_starting_balance + amount, "Amount wasn't correctly sent to the receiver");
-    });
-  });
+  it("should deny buing tokens", async () => {
+    let emptyAccount = accounts[3]
+    try {
+      await instance.buyToken({ from: emptyAccount, value: web3.toWei(1000, 'ether') });
+      assert.fail();
+    } catch (err) {
+      assert.ok(/sender doesn't have enough funds to send tx/.test(err.message))
+      let balance = await instance.balanceOf.call(emptyAccount)
+      assert.equal(balance.valueOf(), 0, "0 is in second account")
+    }
+  })
 });

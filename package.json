@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "description": "Frontend example using truffle v3",
   "scripts": {
+    "test": "truffle test --network test",
     "lint": "eslint ./",
     "build": "webpack",
     "dev": "webpack-dev-server"

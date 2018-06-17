@@ -33,6 +33,7 @@ contract MetaCoin is BasicToken {
 
   function buyToken() public payable {
     uint coins = msg.value * CONVERSION_RATE / CURRENCY_MULTIPLIER;
+    require(coins > 1);
     balances[msg.sender] += coins;
     totalSupply_ += coins;
     emit Transfer(owner, msg.sender, coins);
