@@ -5,7 +5,7 @@ import 'openzeppelin-solidity/contracts/token/ERC20/BasicToken.sol';
 contract MetaCoin is BasicToken {
   address owner;
   string public constant name = "PixelCoin";
-  string public constant symbol = "PIC";
+  string public constant symbol = "PXC";
   uint8 public constant decimals = 2;
   uint256 public constant INITIAL_SUPPLY = 100000 * (10 ** uint256(decimals));
   uint16 public constant NUMBER_OF_PIXELS = 315;
