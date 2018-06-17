@@ -19,7 +19,7 @@ contract('MetaCoin', (accounts) => {
     let account = accounts[4]
     await instance.buyToken({ from: account, value: web3.toWei(1, 'ether') });
     let balance = await instance.balanceOf.call(account)
-    assert.equal(balance.valueOf(), 5, "5 is in second account")
+    assert.equal(balance.valueOf(), 50000, "50000 is in second account")
     assert.ok(web3.eth.getBalance(account).lessThan(web3.toWei(100, 'ether')));
   })
 

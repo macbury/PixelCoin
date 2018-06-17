@@ -91,7 +91,7 @@ window.App = {
   buyTokens: function() {
     var self = this;
     var amount = parseInt(document.getElementById("amountEth").value);
-    var weiAmount = web3.toWei(amount, 'ether')
+    var weiAmount = web3.toWei(amount, 'finney')
     console.log("Sending: " + weiAmount)
     this.setStatus("Initiating transaction... (please wait)");
 

@@ -6,10 +6,10 @@ contract MetaCoin is BasicToken {
   address owner;
   string public constant name = "PixelCoin";
   string public constant symbol = "PXC";
-  uint8 public constant decimals = 2;
+  uint8 public constant decimals = 0;
   uint256 public constant INITIAL_SUPPLY = 100000 * (10 ** uint256(decimals));
   uint16 public constant NUMBER_OF_PIXELS = 315;
-  uint public constant CONVERSION_RATE = 5;
+  uint public constant CONVERSION_RATE = 50000;
   uint public constant CURRENCY_MULTIPLIER = 10 ** 18;
   uint16 public constant NUMBER_OF_ELEMENTS = NUMBER_OF_PIXELS * 3;
   struct Pixel {
@@ -31,9 +31,13 @@ contract MetaCoin is BasicToken {
     emit Transfer(address(0), owner, INITIAL_SUPPLY);
   }
 
+  function weiToCoins(uint valueWei) public pure returns(uint) {
+    return valueWei * CONVERSION_RATE / CURRENCY_MULTIPLIER;
+  }
+
   function buyToken() public payable {
-    uint coins = msg.value * CONVERSION_RATE / CURRENCY_MULTIPLIER;
-    require(coins > 1);
+    uint coins = this.weiToCoins(msg.value);
+    require(coins > 0);
     balances[msg.sender] += coins;
     totalSupply_ += coins;
     emit Transfer(owner, msg.sender, coins);

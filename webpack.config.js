@@ -2,7 +2,7 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './app/javascripts/app.js',
+  entry: './app/javascripts/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'app.js'
@@ -13,6 +13,17 @@ module.exports = {
       { from: './app/index.html', to: "index.html" }
     ])
   ],
+
+  // resolve: {
+  //   extensions: ['.js', '.jsx'],
+  //   alias: {
+  //     // 'reducers': path.resolve(__dirname, 'src/client/reducers/'),
+  //     // 'providers': path.resolve(__dirname, 'src/client/components/providers/'),
+  //     // 'components': path.resolve(__dirname, 'src/client/components/'),
+  //     // 'pages': path.resolve(__dirname, 'src/client/pages/'),
+  //   }
+  // },
+
   module: {
     rules: [
       {
@@ -23,13 +34,9 @@ module.exports = {
     loaders: [
       { test: /\.json$/, use: 'json-loader' },
       {
-        test: /\.js$/,
+        test: /\.js|jsx$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['es2015'],
-          plugins: ['transform-runtime']
-        }
+        loader: 'babel-loader'
       }
     ]
   }
