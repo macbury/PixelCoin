@@ -51,6 +51,10 @@ export default  {
         test: /\.css$/
       },
       {
+        use: 'file-loader',
+        test: /\.(ttf|woff|eot|woff2|png|gif|svg)$/i
+      },
+      {
         type: 'javascript/auto',
         test: /\.json$/,
         oneOf: [
