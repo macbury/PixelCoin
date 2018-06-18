@@ -18,6 +18,14 @@ export default  {
     globalObject: "this"
   },
 
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    alias: {
+      'reducers': path.resolve(__dirname, 'app/javascripts/reducers/'),
+      'contracts': path.resolve(__dirname, 'build/contracts')
+    }
+  },
+
   devServer: {
     port: 3000,
     host: 'localhost',
@@ -41,6 +49,18 @@ export default  {
       {
         use: ['style-loader', 'css-loader'],
         test: /\.css$/
+      },
+      {
+        type: 'javascript/auto',
+        test: /\.json$/,
+        oneOf: [
+          {
+            resourceQuery: /load-inline/,
+            use: 'json-loader'
+          },
+
+          { loader: 'file-loader' }
+        ]
       }
     ]
   },
