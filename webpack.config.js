@@ -1,43 +1,53 @@
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+import webpack from 'webpack'
+import path from 'path'
 
-module.exports = {
-  entry: './app/javascripts/index.js',
-  output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'app.js'
+import CleanWebpackPlugin from 'clean-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import LiveReloadPlugin from 'webpack-livereload-plugin'
+
+const outputDirectory = "dist"
+
+export default  {
+  entry: {
+    main: "./app/javascripts/index.jsx"
   },
-  plugins: [
-    // Copy our app's index.html to the build folder.
-    new CopyWebpackPlugin([
-      { from: './app/index.html', to: "index.html" }
-    ])
-  ],
 
-  // resolve: {
-  //   extensions: ['.js', '.jsx'],
-  //   alias: {
-  //     // 'reducers': path.resolve(__dirname, 'src/client/reducers/'),
-  //     // 'providers': path.resolve(__dirname, 'src/client/components/providers/'),
-  //     // 'components': path.resolve(__dirname, 'src/client/components/'),
-  //     // 'pages': path.resolve(__dirname, 'src/client/pages/'),
-  //   }
-  // },
+  output: {
+    path: path.join(__dirname, outputDirectory),
+    filename: "[name].js",
+    globalObject: "this"
+  },
+
+  devServer: {
+    port: 3000,
+    host: 'localhost',
+    open: true,
+    historyApiFallback: true,
+    proxy: {
+      '/api/': "http://localhost:4000/"
+    },
+    overlay: {
+      errors: true
+    }
+  },
 
   module: {
     rules: [
       {
-       test: /\.css$/,
-       use: [ 'style-loader', 'css-loader' ]
-      }
-    ],
-    loaders: [
-      { test: /\.json$/, use: 'json-loader' },
-      {
+        use: 'babel-loader',
         test: /\.js|jsx$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader'
+        exclude: /node_modules/
+      },
+      {
+        use: ['style-loader', 'css-loader'],
+        test: /\.css$/
       }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'app/index.html'
+    }),
+    new LiveReloadPlugin()
+  ]
 }
