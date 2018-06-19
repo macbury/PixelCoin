@@ -23,6 +23,7 @@ class Middleware {
       console.error(e)
     }
     this.watchAccounts()
+    this.watchTransferEvents()
   }
 
   async watchAccounts() {
@@ -34,6 +35,14 @@ class Middleware {
         this.store.dispatch(changeAccount(account))
       }
     }, 100)
+  }
+
+  async watchTransferEvents() {
+    let instance = await MetaCoin.deployed()
+    instance.Transfer().watch(() => {
+      console.log("TRANSFER is global")
+      this.store.dispatch(updateBalance(web3.eth.accounts[0]))
+    })
   }
 
   handle = (store) => {

@@ -17,7 +17,7 @@ export function buyToken(account, weiAmount) {
     dispatch({ type: Actions.BUY_TOKEN_LOADING, payload: true })
     let instance = await MetaCoin.deployed()
     try {
-      let { tx } = await instance.buyToken({from: account, value: weiAmount})
+      await instance.buyToken({ from: account, value: weiAmount })
       dispatch(updateBalance(account))
       dispatch(setCoins(0))
     } catch (e) {
