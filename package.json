@@ -38,6 +38,7 @@
     "raw-loader": "^0.5.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "redux-actions-generator": "^1.0.0",
     "style-loader": "^0.13.1",
     "truffle-contract": "^1.1.11",
     "web3": "^0.20.0",

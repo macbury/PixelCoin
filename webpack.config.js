@@ -9,7 +9,7 @@ const outputDirectory = "dist"
 
 export default  {
   entry: {
-    main: "./app/javascripts/index.jsx"
+    main: './app/javascripts/index.jsx'
   },
 
   output: {
@@ -22,7 +22,12 @@ export default  {
     extensions: ['.js', '.jsx'],
     alias: {
       'reducers': path.resolve(__dirname, 'app/javascripts/reducers/'),
-      'contracts': path.resolve(__dirname, 'build/contracts')
+      'containers': path.resolve(__dirname, 'app/javascripts/containers/'),
+      'components': path.resolve(__dirname, 'app/javascripts/components/'),
+      'actions': path.resolve(__dirname, 'app/javascripts/reducers/actions'),
+      'images': path.resolve(__dirname, 'app/images'),
+      'contracts': path.resolve(__dirname, 'build/contracts'),
+      'metacoin': path.resolve(__dirname, 'app/javascripts/metacoin.js')
     }
   },
 

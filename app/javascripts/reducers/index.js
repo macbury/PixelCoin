@@ -1,10 +1,12 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import { ethereumMiddleware } from './middlewares/ethereum'
+import { ethereumMiddleware, ethereumReducer as ethereum } from './middlewares/ethereum'
+import { buyToken } from './buy_tokens'
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const reducers = combineReducers({
-  test: () => { return [] }
+  ethereum,
+  buyToken
 })
 
 const middlewares = applyMiddleware(

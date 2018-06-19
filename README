@@ -1,1 +1,6 @@
 Add some docs here
+
+```
+ geth --fast --rpc --rpccorsdomain="http://localhost:3000" --rpcapi eth,web3 --rpcport 7000 --wsport 7001
+geth --fast --rpc --rpccorsdomain="http://localhost.com" --rpcapi eth,web3 --rpcport 7000 --wsport 7001
+```

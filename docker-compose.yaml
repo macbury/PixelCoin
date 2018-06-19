@@ -4,3 +4,10 @@ services:
     image: trufflesuite/ganache-cli:latest
     ports:
       - 7545:8545
+  mqtt:
+    image: eclipse-mosquitto:latest
+    volumes:
+      - .docker/mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    ports:
+      - "1883:1883"
+      - "8083:8083"
