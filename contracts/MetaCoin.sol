@@ -28,11 +28,15 @@ contract MetaCoin is BasicToken {
     owner = msg.sender;
     totalSupply_ = INITIAL_SUPPLY;
     balances[owner] = INITIAL_SUPPLY;
-    emit Transfer(address(0), owner, INITIAL_SUPPLY);
+    emit Transfer(0, owner, INITIAL_SUPPLY);
   }
 
   function weiToCoins(uint valueWei) public pure returns(uint) {
     return valueWei * CONVERSION_RATE / CURRENCY_MULTIPLIER;
+  }
+
+  function coinsToWei(uint coins) public pure returns(uint) {
+    return coins * CURRENCY_MULTIPLIER / CONVERSION_RATE;
   }
 
   function buyToken() public payable {
