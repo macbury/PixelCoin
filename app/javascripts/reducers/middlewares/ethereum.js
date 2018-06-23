@@ -1,7 +1,7 @@
 import { default as Web3 } from 'web3'
 import Actions from 'actions'
 import MetaCoin from 'metacoin'
-import { updateBalance, changeAccount } from 'actions/ethereum'
+import { updateBalance, changeAccount, updatePixels } from 'actions/ethereum'
 
 class Middleware {
   metaCoin = null
@@ -17,13 +17,14 @@ class Middleware {
     MetaCoin.setProvider(web3.currentProvider)
     try {
       this.metaCoin = await MetaCoin.deployed()
-      this.store.dispatch({ type: Actions.ETHEREUM_READY })
+      this.store.dispatch({ type: Actions.ETHEREUM_READY, payload: { contract: this.metaCoin.contract.address } })
     } catch (e) {
       this.store.dispatch({ type: Actions.ETHEREUM_ERROR, payload: e.toString() })
       console.error(e)
     }
     this.watchAccounts()
     this.watchTransferEvents()
+    this.watchPixelChange()
   }
 
   async watchAccounts() {
@@ -37,11 +38,25 @@ class Middleware {
     }, 100)
   }
 
+  async watchPixelChange() {
+    let instance = await MetaCoin.deployed()
+    this.store.dispatch(updatePixels())
+    instance.PixelChange().watch((error, { args }) => {
+      console.log("Event pixel cahnged!")
+      this.store.dispatch(updatePixels())
+    })
+  }
+
   async watchTransferEvents() {
     let instance = await MetaCoin.deployed()
-    instance.Transfer().watch(() => {
-      console.log("TRANSFER is global")
-      this.store.dispatch(updateBalance(web3.eth.accounts[0]))
+    instance.Transfer().watch((error, { args }) => {
+      if (args != null) {
+        let { to } = args
+        let account = web3.eth.accounts[0]
+        if (to === account) {
+          this.store.dispatch(updateBalance(account))
+        }
+      }
     })
   }
 
@@ -68,12 +83,14 @@ export function ethereumReducer(state = { loading: true, metamask: true, error: 
     case Actions.ETHEREUM_MISSING_METAMASK:
       return {...state, metamask: false }
     break
+
     case Actions.ETHEREUM_ERROR:
       return {...state, error: payload }
     break
 
     case Actions.ETHEREUM_READY:
-      return {...state, loading: false, error: null, metamask: true }
+      let { contract } = payload
+      return {...state, loading: false, error: null, metamask: true, contract }
     break
 
     case Actions.ETHEREUM_ACCOUNT_CHANGE:

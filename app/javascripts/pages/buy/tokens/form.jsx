@@ -1,10 +1,18 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Input } from 'semantic-ui-react'
+import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { setCoins, buyToken } from 'actions/buy_token'
 
-class BuyTokens extends React.Component {
+const style = {
+  margin: '120px auto'
+}
+
+class Form extends React.Component {
+
+  componentDidMount () {
+    this.props.setCoins(1)
+  }
 
   onAmountChange = (ev) => {
     let coins = ev.target.value
@@ -19,26 +27,25 @@ class BuyTokens extends React.Component {
     this.props.buyToken(account, wei)
   }
 
-  render() {
+  render () {
     let { coins, wei, loading } = this.props
     let action = {
       color: 'teal',
       labelPosition: 'right',
       icon: 'ethereum',
-      content: web3.fromWei(wei, 'ether') ,
+      content: web3.fromWei(wei, 'ether'),
       onClick: this.buyTokens,
       loading
     }
     return (
-      <div>
-        <Input
-          disabled={loading}
-          action={action}
-          placeholder='Buy tokens'
-          value={coins}
-          onChange={this.onAmountChange}
-        />
-      </div>
+      <Input
+        size='massive'
+        disabled={loading}
+        action={action}
+        placeholder='Buy tokens'
+        value={coins}
+        onChange={this.onAmountChange}
+      />
     )
   }
 }
@@ -53,4 +60,4 @@ function mapStoreToProps({ buyToken, ethereum }) {
   return { coins, wei, account, loading }
 }
 
-export default connect(mapStoreToProps, mapActions)(BuyTokens)
+export default connect(mapStoreToProps, mapActions)(Form)

@@ -4,3 +4,8 @@ Add some docs here
  geth --fast --rpc --rpccorsdomain="http://localhost:3000" --rpcapi eth,web3 --rpcport 7000 --wsport 7001
 geth --fast --rpc --rpccorsdomain="http://localhost.com" --rpcapi eth,web3 --rpcport 7000 --wsport 7001
 ```
+
+https://medium.com/practical-blockchain/deploying-smart-contract-to-rinkeby-testnet-using-truffle-and-mac-os-x-8fc16ff380e2
+```
+geth --testnet --rpc --rpcaddr "localhost" --rpcport "8545" --rpcapi "web3,eth,net,personal" --rpccorsdomain "*" --datadir "./tmp/data" --identity "localnode" --fast
+```

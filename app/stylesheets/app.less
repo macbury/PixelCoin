@@ -1,0 +1,114 @@
+@font-face {
+  font-family: 'MainFont';
+  src: url('./Minecraftia-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  background: #1b1c1d;
+  color: rgba(255,255,255,.9);
+}
+
+body, h1, h2, h3, p, a, .item {
+  font-family: 'MainFont' !important;
+}
+
+.current-balance {
+  margin-left: 10px;
+  font-size: 18px;
+
+  img {
+    image-rendering: pixelated;
+    zoom: 2;
+    margin-left: 5px;
+    margin-bottom: 2px;
+  }
+}
+
+.matrix {
+  margin: 0 auto;
+  display: table;
+  border-spacing: 1px;
+  background-color: #111;
+  border: 5px solid #111;
+
+  &:hover {
+    .pixel {
+      &:hover {
+        background-color: #fff !important;
+      }
+    }
+  }
+
+  .row {
+    display: table-row;
+    .pixel {
+      transition: background-color 250ms linear;
+      display: table-cell;
+      background: #222;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+  }
+}
+
+@keyframes cubeRotation {
+  0%   {  transform: rotateX(-22deg) rotateY(-38deg) rotateZ(0deg);   }
+  50%   { transform: rotateX(-22deg) rotateY(-238deg) rotateZ(0deg);  }
+  100%   {    transform: rotateX(-22deg) rotateY(-398deg) rotateZ(0deg);  }
+}
+
+.D3Cube {
+  animation: cubeRotation 5s infinite;
+  width: 112px;
+  height: 112px;
+  top: 50px;
+  transform-style: preserve-3d;
+  transform: rotateX(-22deg) rotateY(-38deg) rotateZ(0deg);
+  margin: auto;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 0.5s ease-in-out;
+
+  & > div {
+    position: absolute;
+    transition: all 0.5s ease-in-out;
+    width: 112px;
+    height: 112px;
+    float: left;
+    overflow: hidden;
+    opacity: 0.85;
+  }
+
+  .side1 {
+    transform: rotatex(90deg) translateX(0px) translateY(0px) translateZ(56px);
+    background-color: #000;
+  }
+
+  .side2 {
+    transform: rotateY(-90deg) translateX(0px) translateY(0px) translateZ(56px);
+    background-color: #000;
+  }
+
+  .side3 {
+    transform: translateX(0px) translateY(0px) translateZ(56px);
+    background-color: #000;
+  }
+
+  .side4 {
+    transform: rotateY(90deg) translateX(0px) translateY(0px) translateZ(56px);
+    background-color: #000;
+  }
+
+  .side5 {
+    transform: rotateY(180deg) translateX(0px) translateY(0px) translateZ(56px);
+    background-color: #000;
+  }
+
+  .side6 {
+    transform: rotateX(-90deg) translateX(0px) translateY(0px) translateZ(56px);
+    background-color: #000;
+  }
+}

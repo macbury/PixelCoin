@@ -25,6 +25,7 @@ export default  {
       'containers': path.resolve(__dirname, 'app/javascripts/containers/'),
       'components': path.resolve(__dirname, 'app/javascripts/components/'),
       'actions': path.resolve(__dirname, 'app/javascripts/reducers/actions'),
+      'pages': path.resolve(__dirname, 'app/javascripts/pages'),
       'images': path.resolve(__dirname, 'app/images'),
       'contracts': path.resolve(__dirname, 'build/contracts'),
       'metacoin': path.resolve(__dirname, 'app/javascripts/metacoin.js')
@@ -52,8 +53,20 @@ export default  {
         exclude: /node_modules/
       },
       {
-        use: ['style-loader', 'css-loader'],
-        test: /\.css$/
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'less-loader' }
+        ],
+        test: /\.less$/i
+      },
+
+      {
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' }
+        ],
+        test: /\.css/i
       },
       {
         use: 'file-loader',
