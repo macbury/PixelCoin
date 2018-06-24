@@ -2,12 +2,16 @@ import webpack from 'webpack'
 import path from 'path'
 
 import CleanWebpackPlugin from 'clean-webpack-plugin'
+import MinifyPlugin from 'babel-minify-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import CompressionPlugin from 'compression-webpack-plugin'
 import LiveReloadPlugin from 'webpack-livereload-plugin'
 
 const outputDirectory = "dist"
+const envirmoment = process.env.NODE_ENV || 'development'
+const isProduction = envirmoment == 'production'
 
-export default  {
+const settings = {
   entry: {
     main: './app/javascripts/index.jsx'
   },
@@ -93,3 +97,18 @@ export default  {
     new LiveReloadPlugin()
   ]
 }
+
+if (isProduction) {
+  settings.mode = 'production'
+  settings.plugins.push(new CleanWebpackPlugin(['dist/client']))
+  settings.plugins.push(new MinifyPlugin({}, {
+    comments: false,
+    sourceMap: false
+  }))
+  settings.plugins.push(new CompressionPlugin())
+  settings.optimization = {
+    minimize: false
+  }
+}
+
+export default settings

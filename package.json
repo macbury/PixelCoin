@@ -5,7 +5,7 @@
   "scripts": {
     "test": "truffle test --network test",
     "lint": "eslint ./",
-    "build": "webpack",
+    "build": "NODE_ENV=production babel-node ./node_modules/webpack-cli/bin/cli.js --progress --colors --config ./webpack.config.js",
     "dev": "babel-node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --mode development --devtool inline-source-map --hot"
   },
   "author": "Douglas von Kohorn",
@@ -15,6 +15,7 @@
     "babel-core": "^6.22.1",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^7.1.4",
+    "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-transform-runtime": "^6.22.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
@@ -24,6 +25,7 @@
     "babel-register": "^6.22.0",
     "blockies-identicon": "^0.1.0",
     "clean-webpack-plugin": "^0.1.19",
+    "compression-webpack-plugin": "^1.1.11",
     "connected-react-router": "^4.3.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.11",
