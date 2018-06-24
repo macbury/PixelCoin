@@ -8,10 +8,6 @@ import { bindActionCreators } from 'redux'
 const ROWS = 15
 const COLS = 21
 
-function nextTick () {
-  return 60000 - (new Date().getTime() % 60000)
-}
-
 class Pixel extends React.Component {
   render () {
     let { color, id } = this.props
@@ -39,7 +35,7 @@ class Matrix extends React.Component {
     this.timeout = setTimeout(() => {
       this.props.updatePixels()
       this.requestRefresh()
-    }, nextTick())
+    }, 10 * 1000)
   }
 
   componentWillUnmount () {

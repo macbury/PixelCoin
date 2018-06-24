@@ -5,6 +5,8 @@ import { Dimmer, Loader, Header, Icon } from 'semantic-ui-react'
 import { initEthereum } from 'actions/ethereum'
 import downloadMetaMaskImagePath from 'images/download-metamask.png'
 
+import RequireMetaMask from './require_metamask'
+
 class LoadEthereum extends React.Component {
   componentDidMount() {
     this.props.initEthereum()
@@ -18,8 +20,14 @@ class LoadEthereum extends React.Component {
     return this.props.ethereum.error !== null
   }
 
+  noMetamask() {
+    return !this.props.ethereum.metamask
+  }
+
   render() {
-    if (this.hasError()) {
+    if (this.noMetamask()) {
+      return <RequireMetaMask />
+    } else if (this.hasError()) {
       return (
         <Dimmer active>
           <Header as='h2' icon inverted>

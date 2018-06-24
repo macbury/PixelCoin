@@ -1,6 +1,7 @@
 // Allows us to use ES6 in our migrations and tests.
 require('babel-register')
-
+var HDWalletProvider = require("truffle-hdwallet-provider");
+var config = require('truffle.local.js')
 module.exports = {
   networks: {
     development: {
@@ -10,12 +11,11 @@ module.exports = {
     },
 
     staging: {
-      from: '0xbdb19f46b7f419bdcf1047cd20e0f82b7d4a57d2',
-      host: "localhost",
-      port: 8545,
+      provider: function() {
+        return new HDWalletProvider(config.mnemonic, "https://rinkeby.infura.io/" + config.infuraApiKey)
+      },
       network_id: "4", // Rinkeby ID 4
-      from: "0x99a4572656eb49FFEEFbe9588f8e7ab0F8D6Eb5e", // account from which to deploy
-      gas: 6712390
+      //gas: 4612388,
     },
 
     test: {

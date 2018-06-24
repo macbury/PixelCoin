@@ -60,6 +60,7 @@
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "react-color": "^2.14.1",
+    "truffle-hdwallet-provider": "^0.0.5",
     "web3": "^0.20.0"
   }
 }
