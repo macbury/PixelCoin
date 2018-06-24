@@ -8,3 +8,6 @@ Here is running version on IPFS:
 
 And nicer and sexier domain:
 `http://matrix.macbury.ninja/`
+
+How it works:
+`https://www.youtube.com/watch?v=eG7I7eIgkIk`
